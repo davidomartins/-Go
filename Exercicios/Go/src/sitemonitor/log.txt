@@ -1,0 +1,18 @@
+https://www.xpto.x.pto/xpto - online: false
+se
+https://www.alura.com.br - online: true
+https://www.caelum.com.br - online: true
+https://www.caelum.com.br/xpto - online: false
+https://www.xpto.x.pto/xpto - online: false
+29/08/2022 - https://www.alura.com.br - online: true
+29/08/2022 - https://www.caelum.com.br - online: true
+29/08/2022 - https://www.caelum.com.br/xpto - online: false
+29/08/2022 - https://www.xpto.x.pto/xpto - online: false
+29/08/2022 19:36:37 - https://www.alura.com.br - online: true
+29/08/2022 19:36:37 - https://www.caelum.com.br - online: true
+29/08/2022 19:36:37 - https://www.caelum.com.br/xpto - online: false
+29/08/2022 19:36:40 - https://www.xpto.x.pto/xpto - online: false
+29/08/2022 19:39:50 - https://www.alura.com.br - online: true
+29/08/2022 19:39:51 - https://www.caelum.com.br - online: true
+29/08/2022 19:39:51 - https://www.caelum.com.br/xpto - online: false
+29/08/2022 19:39:54 - https://www.xpto.x.pto/xpto - online: false

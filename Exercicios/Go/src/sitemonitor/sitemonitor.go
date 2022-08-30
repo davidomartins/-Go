@@ -1,9 +1,15 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
+	"strings"
+	"time"
 )
 
 func main() {
@@ -30,7 +36,7 @@ func executaComando(comandoLido int) {
 	case 1:
 		monitorarSites()
 	case 2:
-		fmt.Println("Exibindo os logs...")
+		imprimeLogs()
 	case 0:
 		fmt.Println("Saindo do programa...")
 		os.Exit(0)
@@ -55,18 +61,81 @@ func listaDeSites() []string {
 }
 
 func monitorarSites() {
-	listaDeSite := listaDeSites()
+
+	// listaDeSite := listaDeSites()
+	listaDeSite := lerSitedoArquivo("sites.txt")
+
+	fmt.Println("Monitorando:")
+
 	for _, url := range listaDeSite {
-		fmt.Println("Monitorando", url, "...")
 		statCode := statusCodeDoSite(url)
 		if statCode == 200 {
 			fmt.Println("Site", url, "carregado com sucesso!")
+			registraLog(url, true)
 		} else {
 			fmt.Println("Site", url, "com problema, status:", statCode)
+			registraLog(url, false)
 		}
 	}
 }
 
-func lerSitedoArquivo() []string {
-	arquivo, _ := os.Open("sites.txt")
+func lerSitedoArquivo(caminho_arquivo string) []string {
+
+	arq, err1 := os.Open(caminho_arquivo)
+
+	if err1 != nil {
+		fmt.Println("Não foi possível abrir o arquivo ", caminho_arquivo, ". Detalhe do erro: ", err1)
+		os.Exit(-1)
+	}
+
+	leitor := bufio.NewReader(arq)
+
+	linha, err2 := leitor.ReadString('\n')
+
+	if err2 != nil {
+		if err2 == io.EOF {
+			fmt.Println("O arquivo", caminho_arquivo, "está vazio!")
+		} else {
+			fmt.Println("Ocorreu um erro ao ler o arquivo. Detalhe do erro: ", err2)
+		}
+		arq.Close()
+		os.Exit(-1)
+	}
+
+	var sites []string
+
+	for {
+		linha = strings.TrimSpace(linha)
+		sites = append(sites, linha)
+		if err2 == io.EOF {
+			break
+		}
+		linha, err2 = leitor.ReadString('\n')
+	}
+	arq.Close()
+	return sites
+}
+
+func registraLog(site string, status bool) {
+
+	arquivo, err := os.OpenFile("log.txt", os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
+
+	if err != nil {
+		fmt.Println("Ocorreu um erro:", err)
+	}
+
+	arquivo.WriteString(time.Now().Format("02/01/2006 15:04:05") + " - " + site + " - online: " + strconv.FormatBool(status) + "\n")
+
+	arquivo.Close()
+}
+
+func imprimeLogs() {
+
+	arquivo, err := ioutil.ReadFile("log.txt")
+
+	if err != nil {
+		fmt.Println("Ocorreu um erro:", err)
+	}
+
+	fmt.Println(string(arquivo))
 }
