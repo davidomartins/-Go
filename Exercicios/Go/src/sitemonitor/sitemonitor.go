@@ -41,19 +41,22 @@ func executaComando(comandoLido int) {
 }
 
 func statusCodeDoSite(url string) int {
-	resp, _ := http.Get(url)
-	return resp.StatusCode
+	resp, err := http.Get(url)
+	if err != nil {
+		return 500
+	} else {
+		return resp.StatusCode
+	}
 }
 
 func listaDeSites() []string {
-	sites := []string{"https://www.alura.com.br", "https://www.caelum.com.br/", "https://www.caelum.com.br/xpto"}
+	sites := []string{"https://www.alura.com.br", "https://www.caelum.com.br/", "https://www.caelum.com.br/xpto", "https://www.xpto.x.pto/xpto"}
 	return sites
 }
 
 func monitorarSites() {
 	listaDeSite := listaDeSites()
-	for i := 0; i < len(listaDeSite); i++ {
-		url := listaDeSite[i]
+	for _, url := range listaDeSite {
 		fmt.Println("Monitorando", url, "...")
 		statCode := statusCodeDoSite(url)
 		if statCode == 200 {
@@ -62,4 +65,8 @@ func monitorarSites() {
 			fmt.Println("Site", url, "com problema, status:", statCode)
 		}
 	}
+}
+
+func lerSitedoArquivo() []string {
+	arquivo, _ := os.Open("sites.txt")
 }
