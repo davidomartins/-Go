@@ -6,32 +6,32 @@ type ContaCorrente struct {
 	Titular       clientes.Titular
 	NumeroAgencia string
 	NumeroConta   string
-	Saldo         float64
+	saldo         float64
 }
 
-func (c *ContaCorrente) sacar(valordoSaque float64) (string, float64) {
+func (c *ContaCorrente) Sacar(valordoSaque float64) (string, float64) {
 	if valordoSaque < 0 {
 		return "Ops! Esse valor é inválido!", valordoSaque
 	} else {
 
-		podeSacar := valordoSaque <= c.Saldo
+		podeSacar := valordoSaque <= c.saldo
 
 		if podeSacar {
-			c.Saldo -= valordoSaque
-			return "Saque realizado com sucesso", c.Saldo
+			c.saldo -= valordoSaque
+			return "Saque realizado com sucesso", c.saldo
 		} else {
-			return "Saldo insuficiente", c.Saldo
+			return "saldo insuficiente", c.saldo
 
 		}
 	}
 }
 
-func (c *ContaCorrente) depositar(valordoDeposito float64) (string, float64) {
+func (c *ContaCorrente) Depositar(valordoDeposito float64) (string, float64) {
 	if valordoDeposito < 0 {
 		return "Ops! Essa valor de depósito é inválido!", valordoDeposito
 	} else {
-		c.Saldo += valordoDeposito
-		return "Depósito realizado com sucesso!", c.Saldo
+		c.saldo += valordoDeposito
+		return "Depósito realizado com sucesso!", c.saldo
 	}
 
 }
@@ -41,17 +41,21 @@ func (c *ContaCorrente) Transferir(valordaTransferencia float64, contaDestino *C
 		return false
 	} else {
 
-		podeSacar := valordaTransferencia <= c.Saldo
+		podeSacar := valordaTransferencia <= c.saldo
 
 		if podeSacar {
-			c.Saldo -= valordaTransferencia
-			contaDestino.depositar(valordaTransferencia)
+			c.saldo -= valordaTransferencia
+			contaDestino.Depositar(valordaTransferencia)
 			return true
 		} else {
 			return false
 
 		}
 	}
+}
+
+func (c *ContaCorrente) ObterSaldo() float64 {
+	return c.saldo
 }
 
 // func (c *ContaCorrente) soma(numeros ...int64) int64 {
