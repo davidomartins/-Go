@@ -1,2 +1,2 @@
-﻿# _-Go
-# Exercícios do Curso
+﻿# Curso Linguagem de programação Go na Alura
+
